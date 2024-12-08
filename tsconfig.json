@@ -1,13 +1,12 @@
 {
     "compilerOptions": {
-      // isto alinha com o suporte de navegadores do Vue
       "target": "es5",
-      // habilita inferência estrita de propriedades de dados no `this`
       "strict": true,
-      // se usando webpack 2+ ou rollup, para habilitar tree shaking
       "module": "esnext",
       "moduleResolution": "node",
       "baseUrl": "./",
+      "jsx": "preserve",  
+        "allowJs": true,  
       "paths": {
         "@/*": [
           "src/*"
@@ -21,6 +20,7 @@
       ]
     },
     "include": [
+        "src/**/*.js",
         "src/**/*.ts",
         "src/**/*.d.ts",
         "src/**/*.tsx",
