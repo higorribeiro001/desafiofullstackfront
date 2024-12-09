@@ -1,11 +1,12 @@
 {
     "compilerOptions": {
-      "target": "es5",
       "strict": true,
-      "module": "esnext",
+      "module": "ESNext",
+      "target": "ESNext",
       "moduleResolution": "node",
+      "jsx": "preserve",
+      "types": ["vite/client"],
       "baseUrl": "./",
-      "jsx": "preserve",  
         "allowJs": true,  
       "paths": {
         "@/*": [
@@ -25,5 +26,5 @@
         "src/**/*.d.ts",
         "src/**/*.tsx",
         "src/**/*.vue"
-    ]
+    ],
 }

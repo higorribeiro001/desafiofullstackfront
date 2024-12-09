@@ -1,88 +1,143 @@
 <template>
-    <table class="min-w-full divide-y divide-gray-300">
-        <thead class="bg-gray-50">
-        <tr>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Nome</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Empresa</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">E-mail</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Telefone</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Data de cadastro</th>
-            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-            <span class="sr-only">Edit</span>
-            </th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
-        <tr v-for="user in users" :key="user.email">
-            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 truncate">{{ user.name }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">{{ user.company ?? '-' }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">{{ user.email }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">{{ user.phones[0] ?? '-' }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ formatDate(user.created_at) }}</td>
-            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-            <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                >Editar<span class="sr-only">, {{ user.name }}</span></a
-            >
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <!-- pagination -->
-    <div 
-        v-if="itemsPagination.last_page > 1" 
-        class="flex flex-row justify-end items-center w-full px-4 py-1 bg-gray-50"
-    >
-        <div class="flex gap-2 items-center w-[200px] justify-between">
-        <button 
-            :disabled="itemsPagination.current_page < 2"
-            class="flex justify-center items-center text-white font-semibold pb-[3px] bg-indigo-600 rounded w-[30px] h-[30px] disabled:bg-indigo-400"
-            @click="backPage"
+  <table class="min-w-full divide-y divide-gray-300">
+    <thead class="bg-gray-50">
+      <tr>
+        <th
+          scope="col"
+          class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
         >
-            {{"<"}}
-        </button>
-        <button 
-            v-if="itemsPagination.last_page > 0"
-            :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_one, 'font-semibold': itemsPagination.index_one}"
-            @click="() => itemsPagination.current_page = itemsPagination.index_one"
+          Nome
+        </th>
+        <th
+          scope="col"
+          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
         >
-            {{ itemsPagination.index_one }}
-        </button>
-        <button 
-            v-if="itemsPagination.last_page > 1"
-            :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_two, 'font-semibold': itemsPagination.index_two}"
-            @click="() => itemsPagination.current_page = itemsPagination.index_two"
+          Empresa
+        </th>
+        <th
+          scope="col"
+          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
         >
-            {{ itemsPagination.index_two }}
-        </button>
-        <button
-            v-if="itemsPagination.last_page > 2" 
-            :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_three, 'font-semibold': itemsPagination.index_three}"
-            @click="() => itemsPagination.current_page = itemsPagination.index_three"
+          E-mail
+        </th>
+        <th
+          scope="col"
+          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
         >
-            {{ itemsPagination.index_three }}
-        </button>
-        <p 
-            v-if="(itemsPagination.last_page > 4 && itemsPagination.current_page + 1 < itemsPagination.last_page) || itemsPagination.index_three + 1 !== itemsPagination.last_page"
-            class="font-semibold"
+          Telefone
+        </th>
+        <th
+          scope="col"
+          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
         >
-            ...
-        </p>
-        <button 
-            v-if="itemsPagination.last_page > 3"
-            :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.last_page, 'font-semibold': itemsPagination.last_page}"
-            @click="() => itemsPagination.current_page = itemsPagination.last_page"
+          Data de cadastro
+        </th>
+        <th
+          scope="col"
+          class="relative py-3.5 pl-3 pr-4 sm:pr-6 max-w-[24px]"
         >
-            {{ itemsPagination.last_page }}
-        </button>
-        <button 
-            :disabled="itemsPagination.last_page < 2 || itemsPagination.current_page === itemsPagination.last_page"
-            class="flex justify-center items-center text-white font-semibold pb-[3px] bg-indigo-600 rounded w-[30px] h-[30px] disabled:bg-indigo-400"
-            @click="nextPage"
-        >
-            {{">"}}
-        </button>
-        </div>
+          <span class="sr-only">Edit</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200 bg-white">
+      <tr
+        v-for="user in users"
+        :key="user.email"
+      >
+        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 truncate">
+          {{ user.name }}
+        </td>
+        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">
+          {{ user.company ?? '-' }}
+        </td>
+        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">
+          {{ user.email }}
+        </td>
+        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">
+          {{ user.phones[0] ?? '-' }}
+        </td>
+        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+          {{ formatDate(user.created_at) }}
+        </td>
+        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+          <a
+            href="#"
+            class="flex justify-end"
+          >
+            <svg
+              fill="#4f45e5"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 24 24"
+              width="24px"
+              height="24px"
+            ><g id="Rounded"><circle
+              cx="12"
+              cy="12"
+              r="3"
+            /><path d="M12,4C5.142,4,1.885,9.879,1.095,11.557c-0.132,0.28-0.132,0.605,0,0.885C1.885,14.121,5.142,20,12,20c6.834,0,10.093-5.838,10.897-7.54c0.138-0.293,0.138-0.627,0-0.92C22.093,9.838,18.834,4,12,4z M12,17c-2.761,0-5-2.239-5-5s2.239-5,5-5s5,2.239,5,5S14.761,17,12,17z" /></g></svg>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- pagination -->
+  <div 
+    v-if="itemsPagination.last_page > 1" 
+    class="flex flex-row justify-end items-center w-full px-4 py-1 bg-gray-50"
+  >
+    <div class="flex gap-2 items-center w-[200px] justify-between">
+      <button 
+        :disabled="itemsPagination.current_page < 2"
+        class="flex justify-center items-center text-white font-semibold pb-[3px] bg-indigo-600 rounded w-[30px] h-[30px] disabled:bg-indigo-400"
+        @click="backPage"
+      >
+        {{ "<" }}
+      </button>
+      <button 
+        v-if="itemsPagination.last_page > 0"
+        :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_one, 'font-semibold': itemsPagination.index_one}"
+        @click="() => itemsPagination.current_page = itemsPagination.index_one"
+      >
+        {{ itemsPagination.index_one }}
+      </button>
+      <button 
+        v-if="itemsPagination.last_page > 1"
+        :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_two, 'font-semibold': itemsPagination.index_two}"
+        @click="() => itemsPagination.current_page = itemsPagination.index_two"
+      >
+        {{ itemsPagination.index_two }}
+      </button>
+      <button
+        v-if="itemsPagination.last_page > 2" 
+        :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_three, 'font-semibold': itemsPagination.index_three}"
+        @click="() => itemsPagination.current_page = itemsPagination.index_three"
+      >
+        {{ itemsPagination.index_three }}
+      </button>
+      <p 
+        v-if="(itemsPagination.last_page > 4 && itemsPagination.current_page + 1 < itemsPagination.last_page) || itemsPagination.index_three + 1 !== itemsPagination.last_page"
+        class="font-semibold"
+      >
+        ...
+      </p>
+      <button 
+        v-if="itemsPagination.last_page > 3"
+        :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.last_page, 'font-semibold': itemsPagination.last_page}"
+        @click="() => itemsPagination.current_page = itemsPagination.last_page"
+      >
+        {{ itemsPagination.last_page }}
+      </button>
+      <button 
+        :disabled="itemsPagination.last_page < 2 || itemsPagination.current_page === itemsPagination.last_page"
+        class="flex justify-center items-center text-white font-semibold pb-[3px] bg-indigo-600 rounded w-[30px] h-[30px] disabled:bg-indigo-400"
+        @click="nextPage"
+      >
+        {{ ">" }}
+      </button>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">

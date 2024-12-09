@@ -31,3 +31,21 @@ export interface ItemsPagination {
     nextPage: () => void;
     actualPage: (page: number) => void;
 }
+
+export interface RequestUser {
+    label: string;
+    type: string;
+    placeholder: string;
+    value: string;
+    error: string;
+}
+
+export interface PropsHeader {
+    title: string;
+    description: string;
+    buttonCreate?: boolean;
+    buttonEdit?: boolean;
+    buttonBack?: boolean;
+    editUser?: boolean;
+    funcEditUser: () => void;
+}

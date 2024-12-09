@@ -15,6 +15,16 @@ const routes = [
         name: 'users', 
         component: () => import('./components/pages/UsersApp.vue') 
     },
+    { 
+        path: '/user', 
+        name: 'user', 
+        component: () => import('./components/pages/UserApp.vue') 
+    },
+    { 
+        path: '/new-user', 
+        name: 'new-user', 
+        component: () => import('./components/pages/CreateUserApp.vue') 
+    },
   ]
 
 const router = createRouter({
