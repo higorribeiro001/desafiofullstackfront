@@ -52,18 +52,20 @@ export interface PropsHeader {
 
 interface FormBuilderInterface {
   formFields: {
-    type?: string
-    name?: string
-    label?: string
-    placeholder?: string
+    type?: string;
+    name?: string;
+    label?: string;
+    placeholder?: string;
   }[]
 }
 
 interface FormBuilderAplicationInterface {
-    type?: string
-    name?: string
-    label?: string
-    placeholder?: string
+    type?: string;
+    name?: string;
+    label?: string;
+    placeholder?: string;
+    value?: string;
+    error?: string;
 }
 
 interface FormDataInterface {
