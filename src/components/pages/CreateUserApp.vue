@@ -203,6 +203,16 @@ const formData = ref<Array<FormDataInterface>>([
       value: '',
       error: ''
     },
+    {
+      name: 'senha',
+      value: '',
+      error: ''
+    },
+    {
+      name: 'confirmação de senha',
+      value: '',
+      error: ''
+    },
 ]);
 
 onMounted(() => {
@@ -252,6 +262,14 @@ const confirmSubmit = async () => {
 
     if (formFields.value[i].type === 'email') {
       serError(validation.validationEmail(formData.value[i].value, formData.value[i].name), i);
+    }
+
+    if (formFields.value[i].name === 'password') {
+      serError(validation.validationPassword(formData.value[i].value, formData.value[i].name), i);
+    }
+
+    if (formFields.value[i].name === 'confPassword') {
+      serError(validation.validationConfirmPassword(formData.value[i].value, formData.value[i-1].value, formData.value[i].name), i);
     }
   }
 

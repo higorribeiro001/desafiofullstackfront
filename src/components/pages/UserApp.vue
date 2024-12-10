@@ -284,7 +284,7 @@
                         class="inline-flex items-center justify-center rounded-md border border-indigo-600 
                       bg-white-600 px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-gray-100 
                       focus:outline-none focus:ring-2 focus:ring-white-500 focus:ring-offset-2 sm:w-[120px] w-1/2"
-                        @click="handleEditUser"
+                        @click="resetValues"
                       >
                         Cancelar
                       </button>
@@ -396,5 +396,16 @@ const confirmSubmit = async () => {
       return;
     }
   }
+}
+
+const resetValues = () => {
+  fileUpload.value = null;
+
+  for (let f of formData.value) {
+    f.value = '';
+    f.error = '';
+  }
+
+  editUser.value = false;
 }
 </script>
