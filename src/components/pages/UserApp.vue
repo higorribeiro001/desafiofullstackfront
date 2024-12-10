@@ -25,7 +25,7 @@
                   </div>
                   <div class="flex flex-col gap-1">
                     <h2 
-                      class="text-[20px] font-bold truncate transition-all max-w-[500px] truncate"
+                      class="text-[20px] font-bold truncate transition-all max-w-[460px] truncate"
                     >
                       Higor Ribeiro Araujo
                     </h2>
@@ -33,7 +33,7 @@
                       <h3 class="text-[16px] font-medium">
                         Empresa:
                       </h3>
-                      <p class="text-[16px] max-w-[500px] truncate">
+                      <p class="text-[16px] max-w-[460px] truncate">
                         -
                       </p>
                     </div>
@@ -41,7 +41,7 @@
                       <h3 class="text-[16px] font-medium">
                         E-mail:
                       </h3>
-                      <p class="text-[16px] max-w-[500px] truncate">
+                      <p class="text-[16px] max-w-[460px] truncate">
                         higor@gmail.com
                       </p>
                     </div>
@@ -290,28 +290,24 @@
                       *Campos obrigatórios
                     </p>
                   </div>
-                  <div class="flex flex-row w-full justify-between">
-                    <div class="w-full p-1">
-                      <button
-                        type="submit"
-                        class="inline-flex w-full items-center justify-center rounded-md border border-transparent 
+                  <div class="flex flex-row w-full justify-between gap-2">
+                    <button
+                      type="button"
+                      class="inline-flex w-full items-center justify-center rounded-md border border-transparent 
                                         bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
-                                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 w-[120px]"
-                      >
-                        Salvar
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        type="button"
-                        class="inline-flex items-center justify-center rounded-md border border-indigo-600 
+                                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-[120px] w-1/2"
+                    >
+                      Salvar
+                    </button>
+                    <button
+                      type="button"
+                      class="inline-flex items-center justify-center rounded-md border border-indigo-600 
                       bg-white-600 px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-gray-100 
-                      focus:outline-none focus:ring-2 focus:ring-white-500 focus:ring-offset-2 w-[120px]"
-                        @click="handleEditUser"
-                      >
-                        Cancelar
-                      </button>
-                    </div>
+                      focus:outline-none focus:ring-2 focus:ring-white-500 focus:ring-offset-2 sm:w-[120px] w-1/2"
+                      @click="handleEditUser"
+                    >
+                      Cancelar
+                    </button>
                   </div>
                 </div>
               </form>

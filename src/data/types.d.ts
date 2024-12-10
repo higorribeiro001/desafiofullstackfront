@@ -49,3 +49,25 @@ export interface PropsHeader {
     editUser?: boolean;
     funcEditUser: () => void;
 }
+
+interface FormBuilderInterface {
+  formFields: {
+    type?: string
+    name?: string
+    label?: string
+    placeholder?: string
+  }[]
+}
+
+interface FormBuilderAplicationInterface {
+    type?: string
+    name?: string
+    label?: string
+    placeholder?: string
+}
+
+interface FormDataInterface {
+    name: string;
+    value: string;
+    error: string;
+}

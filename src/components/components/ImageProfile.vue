@@ -1,9 +1,9 @@
 <template>
-  <div class="max-w-[200px] max-h-[240px] rounded bg-gray-200">
+  <div class="max-w-[220px] max-h-[240px] rounded bg-gray-200">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      width="200px"
+      width="220px"
       height="240px"
     >
       <path
