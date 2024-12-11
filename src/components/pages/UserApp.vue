@@ -4,6 +4,7 @@
       title="Usuário"
       description="Detalhes do usuário."
       :button-back="true"
+      :func-button-back="backPage"
       :button-edit="true"
       :edit-user="editUser"
       :func-edit-user="handleEditUser"
@@ -14,7 +15,7 @@
           <div class="flex flex-wrap overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg bg-white lg:p-10 p-4">
             <div
               v-if="!editUser"
-              class="flex flex-wrap w-full"
+              class="flex flex-wrap w-full animate-fade-left"
             >
               <div 
                 class="flex flex-col lg:w-1/2 md:w-full sm:w-full p-2"
@@ -103,7 +104,7 @@
             </div>
             <div
               v-else 
-              class="flex w-full p-2 transition-transform"
+              class="flex w-full p-2 animate-fade-left"
             >
               <form 
                 class="flex flex-wrap w-full justify-between"
@@ -457,5 +458,9 @@ const setOpenAlertMessage = () => {
 
 const setOpenAlertDeletePhone = () => {
   isOpenAlertDeletePhone.value = !isOpenAlertDeletePhone.value;
+}
+
+const backPage = () => {
+  window.location.href = '/users';
 }
 </script>

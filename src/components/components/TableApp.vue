@@ -28,7 +28,7 @@
         </th>
         <th
           scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+          class="hidden lg:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
         >
           Data de cadastro
         </th>
@@ -44,6 +44,7 @@
       <tr
         v-for="user in users"
         :key="user.email"
+        class="animate-fade-up"
       >
         <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 truncate">
           {{ user.name }}
@@ -57,7 +58,7 @@
         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">
           {{ user.phones[0] ?? '-' }}
         </td>
-        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+        <td class="hidden lg:table-cell whitespace-nowrap px-3 py-4 text-sm text-gray-500">
           {{ formatDate(user.created_at) }}
         </td>
         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

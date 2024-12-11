@@ -4,6 +4,7 @@
       <button 
         v-if="props.buttonBack"
         class="mt-1 mr-3"
+        @click="props.funcButtonBack"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -74,6 +75,7 @@ interface PropsHeader {
     buttonCreate?: boolean;
     buttonEdit?: boolean;
     buttonBack?: boolean;
+    funcButtonBack: () => void;
     editUser?: boolean;
     funcEditUser: () => void;
 }

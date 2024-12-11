@@ -1,8 +1,10 @@
 <template>
-  <div class="px-4 sm:px-6 lg:px-8">
+  <div class="px-4 sm:px-6 lg:px-8 animate-fade-left">
     <HeaderApp 
       title="Cadastrar Usuário"
       description="Forneça os dados necessários para realização do cadastro."
+      :button-back="true"
+      :func-button-back="backPage"
       :func-edit-user="() => {}"
     />
     <div class="mt-8 flex flex-col">
@@ -312,7 +314,7 @@ const setVisibleConfPassword = (value: boolean) => {
 }
 
 const backPage = () => {
-  window.location.href = 'users';
+  window.location.href = '/users';
 }
 
 const setOpenLoading = () => {

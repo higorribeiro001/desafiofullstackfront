@@ -1,9 +1,10 @@
 <template>
-  <div class="px-4 sm:px-6 lg:px-8">
+  <div class="px-4 sm:px-6 lg:px-8 animate-fade-left">
     <HeaderApp 
       title="Usuários"
       description="Lista de usuários cadastros no sistema."
       :button-create="true"
+      :func-button-back="() => {}"
       :func-edit-user="() => {}"
     />
     <div class="mt-8 flex flex-col">
