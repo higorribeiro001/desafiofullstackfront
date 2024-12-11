@@ -1,6 +1,13 @@
 <template>
   <div class="max-w-[220px] max-h-[240px] rounded bg-gray-200">
+    <img
+      v-if="props.image"
+      class="w-[220px] h-[240px] rounded"
+      :src="props.image"
+      alt="photo"
+    >
     <svg
+      v-else
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       width="220px"
@@ -12,3 +19,10 @@
     </svg>
   </div>
 </template>
+
+<script setup lang="ts">
+import { defineProps } from 'vue';
+
+const props = defineProps<{image?: string | null}>();
+
+</script>

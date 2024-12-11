@@ -22,7 +22,7 @@
               >
                 <div class="flex flex-wrap items-start gap-6">
                   <div class="flex flex-col gap-4">
-                    <ImageProfile />
+                    <ImageProfile :image="user?.image !== null ? urlImg : null" />
                   </div>
                   <div class="flex flex-col gap-1">
                     <h2 
@@ -139,7 +139,10 @@
                       class="w-[220px] max-h-[240px] rounded"
                       :src="urlImage(fileUpload)"
                     >
-                    <ImageProfile v-else />
+                    <ImageProfile
+                      v-else
+                      :image="user?.image !== null ? urlImg : null"
+                    />
                     <div class="flex flex-col">
                       <label
                         for="file-upload"
@@ -393,8 +396,10 @@ import UserAdapt from '@/services/adapt/UserAdapt';
 import { formatDate } from '@/utils/dateUtils';
 import { deletePhone } from '@/services/api/phone';
 
+
 const route = useRoute();
 const userId = ref(route.params.id);
+const urlImg = ref<string | null>(null);
 const idPhoneSelected = ref();
 
 const editUser = ref<boolean>(false);
@@ -614,6 +619,8 @@ const detailUser = async () => {
     formData.value[0].value = user.value!.name! ?? '';
     formData.value[1].value = user.value!.company! ?? '';
     formData.value[2].value = user.value!.email! ?? '';
+
+    urlImg.value = process.env.VUE_APP_BACKEND_URL_PATH_STORAGE!+user.value!.image;
   }
 }
 </script>

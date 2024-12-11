@@ -160,7 +160,7 @@
         {{ itemsPagination.index_three }}
       </button>
       <p 
-        v-if="(itemsPagination.last_page > 4 && itemsPagination.current_page + 1 < itemsPagination.last_page) || itemsPagination.index_three + 1 !== itemsPagination.last_page"
+        v-if="itemsPagination.last_page > 4"
         class="font-semibold"
       >
         ...
@@ -215,7 +215,7 @@ const nextPage = () => {
 }
 
 const backPage = () => {
-  if (itemsPagination.value.current_page === itemsPagination.value.last_page) {
+  if (itemsPagination.value.current_page > 5 &&  itemsPagination.value.current_page === itemsPagination.value.last_page) {
     itemsPagination.value.index_one = itemsPagination.value.current_page - 3;
     itemsPagination.value.index_two = itemsPagination.value.current_page - 2;
     itemsPagination.value.index_three = itemsPagination.value.current_page - 1;
@@ -228,6 +228,7 @@ const backPage = () => {
     itemsPagination.value.index_two -= 1;
     itemsPagination.value.index_three -= 1;
   } 
+  listUsers();
 }
 
 onMounted(() => {
@@ -244,6 +245,7 @@ const listUsers = async () => {
     const usersAdapt = new UsersAdapt(response.data);
     users.value = usersAdapt.externalUsersAdapt!.data;
     itemsPagination.value.current_page = usersAdapt.externalUsersAdapt!.current_page;
+    itemsPagination.value.last_page = usersAdapt.externalUsersAdapt!.last_page;
   }
 
   isLoading.value = false;
