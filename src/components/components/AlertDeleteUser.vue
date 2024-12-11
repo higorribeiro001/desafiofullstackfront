@@ -30,7 +30,7 @@
                       as="h3"
                       class="text-base font-semibold text-gray-900"
                     >
-                      Deseja mesmo remover este Telefone?
+                      Deseja mesmo remover este Usuário?
                     </DialogTitle>
                   </div>
                 </div>

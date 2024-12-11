@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router';
+import VueTheMask from 'vue-the-mask';
 
 import './css/app.css';
 
@@ -37,6 +38,7 @@ const app = createApp(App)
 
 app.config.globalProperties.urlBackend = 'https://desafio.test'
 
+app.use(VueTheMask)
 app.use(router)
 app.mount('#app')
 

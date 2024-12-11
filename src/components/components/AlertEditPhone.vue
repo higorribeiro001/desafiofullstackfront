@@ -5,7 +5,7 @@
   >
     <Dialog
       class="relative z-10"
-      @close="props.funcIsOpen"
+      @close="() => props.funcIsOpen(props.id)"
     >
       <div
         class="fixed inset-0 bg-gray-500/75 transition-opacity"
@@ -31,7 +31,7 @@
                         id="modal-title"
                         class="text-base font-semibold text-gray-900"
                       >
-                        Cadastrar telefone
+                        Editar telefone
                       </h3>
                       <div class="mt-2 mb-3">
                         <p class="text-sm text-gray-500">
@@ -116,11 +116,11 @@ import { FormBuilderAplicationInterface, FormDataInterface } from '@/data/types'
 import FormBuilder from '@/services/forms/FormBuilder';
 import FormValidation from '@/services/forms/FormValidation';
 import { defineProps, onMounted, ref } from 'vue';
-import { createPhone } from '@/services/api/phone';
+import { updatePhone } from '@/services/api/phone';
 import AlertMessage from '../components/AlertMessage.vue';
 import LoadingApp from '../components/LoadingApp.vue';
 
-const props = defineProps<{isOpen: boolean; funcIsOpen: () => void; userId: number; funcGetUser: () => void}>();
+const props = defineProps<{isOpen: boolean; funcIsOpen: (id: number) => void; id: number; userId: number; funcGetUser: () => void}>();
 
 const isOpenLoading = ref(false);
 const itemsAlertMessage = ref({
@@ -166,17 +166,17 @@ const confirmSubmit = async () => {
 
   isOpenLoading.value = true;
   try {
-    const response = await createPhone({
-      num: formData.value[0].value, user_id: props.userId
+    const response = await updatePhone({
+      id: props.id, num: formData.value[0].value, user_id: props.userId
     });
 
-    if (response.status === 201) {
+    if (response.status === 200) {
       itemsAlertMessage.value.active = true;
       itemsAlertMessage.value.title = 'Sucesso';
-      itemsAlertMessage.value.message = 'Telefone cadastrado com sucesso.';
+      itemsAlertMessage.value.message = 'Telefone editado com sucesso.';
       resetValues();
       props.funcGetUser();
-      props.funcIsOpen();
+      props.funcIsOpen(props.id);
     }
   } catch {
     itemsAlertMessage.value.active = true;
@@ -194,7 +194,7 @@ const resetValues = () => {
     f.error = '';
   }
 
-  props.funcIsOpen();
+  props.funcIsOpen(props.id);
 }
 
 const setOpenLoading = () => {

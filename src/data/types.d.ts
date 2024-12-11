@@ -83,6 +83,7 @@ interface UserAdaptInterface {
     updated_at: string;
     phones: [
         {
+            id: number;
             user_id: number;
             num: string;
         }
@@ -93,4 +94,19 @@ interface UsersAdaptInterface {
     current_page: number;
     last_page: number;
     data: UserAdaptInterface[]
+}
+
+interface FormDataUser {
+    id?: number;
+    name: string;
+    image: File | null;
+    email: string;
+    company: string;
+    password?: string;
+}
+
+interface FormDataPhone {
+    id?: number;
+    num: string;
+    user_id: number;
 }

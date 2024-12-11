@@ -69,7 +69,7 @@
                       class="hidden sm:inline-flex w-full items-center justify-center rounded-md border border-transparent 
                       bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 
                       focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-[150px] mt-2"
-                      @click="setOpenAlertDeletePhone"
+                      @click="setOpenAlertDeleteUser"
                     >
                       Excluir Perfil
                     </button>
@@ -85,7 +85,7 @@
                     Telefone(s):
                   </h3>
                   <div
-                    class="flex flex-col p-2 rounded bg-gray-200 w-full mb-2"
+                    class="flex flex-col p-2 rounded bg-gray-200 w-full mb-2 gap-2"
                   >
                     <div
                       v-for="(phone, index) in user?.phones"
@@ -156,7 +156,7 @@
                         >
                       </label>
                       <p class="text-xs/5 text-gray-600">
-                        PNG, JPG, JPEG de até 10MB
+                        PNG, JPG, JPEG de até 2MB
                       </p>
                       <span class="text-red-600 text-sm/6 w-[220px]">{{ errorFile }}</span>
                     </div>
@@ -196,7 +196,7 @@
                       <h3 class="text-[16px] font-medium">
                         Telefone(s):
                       </h3>
-                      <div class="flex flex-col p-2 rounded bg-gray-200 w-full mb-2">
+                      <div class="flex flex-col p-2 rounded bg-gray-200 w-full mb-2 gap-2">
                         <div
                           v-for="(phone, index) in user?.phones"
                           :key="index"
@@ -206,7 +206,11 @@
                             {{ phone.num }}
                           </p>
                           <div class="flex flex-row gap-2">
-                            <button class="flex justify-center items-center bg-green-600 hover:bg-green-500 w-6 h-6 rounded">
+                            <button
+                              type="button"
+                              class="flex justify-center items-center bg-green-600 hover:bg-green-500 w-6 h-6 rounded"
+                              @click="() => setOpenEditPhone(phone.id)"
+                            >
                               <svg
                                 width="15"
                                 height="15"
@@ -241,7 +245,11 @@
                                 </defs>
                               </svg>
                             </button>
-                            <button class="flex justify-center items-center bg-red-600 hover:bg-red-500 w-6 h-6 rounded">
+                            <button
+                              type="button"
+                              class="flex justify-center items-center bg-red-600 hover:bg-red-500 w-6 h-6 rounded"
+                              @click="() => setOpenAlertDeletePhone(phone.id)"
+                            >
                               <svg
                                 width="13"
                                 height="13"
@@ -333,6 +341,15 @@
   <AlertRegisterPhone
     :is-open="isOpenRegisterPhone"
     :func-is-open="setOpenRegisterPhone"
+    :user-id="Number(userId)"
+    :func-get-user="detailUser"
+  />
+  <AlertEditPhone
+    :id="idPhoneSelected"
+    :is-open="isOpenEditPhone"
+    :func-is-open="setOpenEditPhone"
+    :user-id="Number(userId)"
+    :func-get-user="detailUser"
   />
   <AlertMessage
     :is-open="itemsAlertMessage.active"
@@ -345,9 +362,15 @@
     :is-open="isOpenLoading"
     :func-is-open="setOpenLoading"
   />
+  <AlertDeleteUser
+    :is-open="isOpenAlertDeleteUser"
+    :func-is-open="setOpenAlertDeleteUser"
+    :func-delete="confirmDeleteUser"
+  />
   <AlertDeletePhone
     :is-open="isOpenAlertDeletePhone"
     :func-is-open="setOpenAlertDeletePhone"
+    :func-delete="confirmDeletePhone"
   />
 </template>
 
@@ -359,21 +382,26 @@ import FormBuilder from '@/services/forms/FormBuilder';
 import { FormBuilderAplicationInterface, FormDataInterface, UserAdaptInterface } from '@/data/types';
 import FormValidation from '@/services/forms/FormValidation';
 import AlertRegisterPhone from '../components/AlertRegisterPhone.vue';
+import AlertEditPhone from '../components/AlertEditPhone.vue';
 import AlertMessage from '../components/AlertMessage.vue';
 import LoadingApp from '../components/LoadingApp.vue';
+import AlertDeleteUser from '../components/AlertDeleteUser.vue';
 import AlertDeletePhone from '../components/AlertDeletePhone.vue';
 import { useRoute } from 'vue-router';
-import { getUser } from '@/services/api/user';
+import { deleteUser, getUser, updateUser } from '@/services/api/user';
 import UserAdapt from '@/services/adapt/UserAdapt';
 import { formatDate } from '@/utils/dateUtils';
+import { deletePhone } from '@/services/api/phone';
 
 const route = useRoute();
 const userId = ref(route.params.id);
-console.log(userId)
+const idPhoneSelected = ref();
 
 const editUser = ref<boolean>(false);
 const isOpenRegisterPhone = ref(false);
+const isOpenEditPhone = ref(false);
 const isOpenLoading = ref(false);
+const isOpenAlertDeleteUser = ref(false);
 const isOpenAlertDeletePhone = ref(false);
 const itemsAlertMessage = ref({
   active: false,
@@ -428,7 +456,7 @@ const onFileChange = (event: Event) => {
 
     if (file) {
         const allowedTypes = ['image/png', 'image/jpeg', 'application/jpg'];
-        const MAX_SIZE = 10 * 1024 * 1024;
+        const MAX_SIZE = 2 * 1024 * 1024;
         
         if (!allowedTypes.includes(file.type)) {
             errorFile.value = '🚫 Tipo de arquivo inválido! Por favor, selecione uma imagem PNG, JPEG ou JPG.';
@@ -456,20 +484,83 @@ const confirmSubmit = async () => {
     if (formFields.value[i].type === 'email') {
       serError(validation.validationEmail(formData.value[i].value, formData.value[i].name), i);
     }
-
-    if (formFields.value[i].name === 'password') {
-      serError(validation.validationPassword(formData.value[i].value, formData.value[i].name), i);
-    }
-
-    if (formFields.value[i].name === 'confPassword') {
-      serError(validation.validationConfirmPassword(formData.value[i].value, formData.value[i-1].value, formData.value[i].name), i);
-    }
   }
 
   for (let f of formData.value) {
     if (f.error !== '') {
       return;
     }
+  }
+
+  isOpenLoading.value = true;
+  try {
+    const response = await updateUser({
+      id: Number(userId.value), name: formData.value[0].value, image: fileUpload?.value, company: formData.value[1].value, email: formData.value[2].value
+    });
+
+    if (response.status === 200) {
+      itemsAlertMessage.value.active = true;
+      itemsAlertMessage.value.title = 'Sucesso';
+      itemsAlertMessage.value.message = 'Usuário editado com sucesso.';
+      resetValues();
+      detailUser();
+    }
+  } catch {
+    itemsAlertMessage.value.active = true;
+    itemsAlertMessage.value.title = 'Erro';
+    itemsAlertMessage.value.message = 'Erro inesperado. Tente novamente mais tarde.';
+    itemsAlertMessage.value.isError = true;
+  } finally {
+    isOpenLoading.value = false;
+  }
+}
+
+const confirmDeleteUser = async () => {
+  isOpenLoading.value = true;
+  try {
+    const response =  await deleteUser(
+      Number(userId.value)
+    );
+
+    if (response.status === 200) {
+      itemsAlertMessage.value.active = true;
+      itemsAlertMessage.value.title = 'Sucesso';
+      itemsAlertMessage.value.message = 'Telefone deletado com sucesso.';
+      isOpenAlertDeletePhone.value = false;
+      setTimeout(() => {
+        window.location.href = '/users';
+      }, 2000);
+    }
+  } catch {
+    itemsAlertMessage.value.active = true;
+    itemsAlertMessage.value.title = 'Erro';
+    itemsAlertMessage.value.message = 'Erro inesperado. Tente novamente mais tarde.';
+    itemsAlertMessage.value.isError = true;
+  } finally {
+    isOpenLoading.value = false;
+  }
+}
+
+const confirmDeletePhone = async () => {
+  isOpenLoading.value = true;
+  try {
+    const response =  await deletePhone(
+      Number(idPhoneSelected.value)
+    );
+
+    if (response.status === 200) {
+      itemsAlertMessage.value.active = true;
+      itemsAlertMessage.value.title = 'Sucesso';
+      itemsAlertMessage.value.message = 'Telefone deletado com sucesso.';
+      isOpenAlertDeletePhone.value = false;
+    }
+  } catch {
+    itemsAlertMessage.value.active = true;
+    itemsAlertMessage.value.title = 'Erro';
+    itemsAlertMessage.value.message = 'Erro inesperado. Tente novamente mais tarde.';
+    itemsAlertMessage.value.isError = true;
+  } finally {
+    isOpenLoading.value = false;
   }
 }
 
@@ -488,6 +579,16 @@ const setOpenRegisterPhone = () => {
   isOpenRegisterPhone.value = !isOpenRegisterPhone.value;
 }
 
+const setOpenEditPhone = (id: number) => {
+  idPhoneSelected.value = id;
+  isOpenEditPhone.value = !isOpenEditPhone.value;
+}
+
+const setOpenAlertDeletePhone = (id?: number) => {
+  idPhoneSelected.value = id!;
+  isOpenAlertDeletePhone.value = !isOpenAlertDeletePhone.value;
+}
+
 const setOpenLoading = () => {
   isOpenLoading.value = !isOpenLoading.value;
 }
@@ -496,8 +597,8 @@ const setOpenAlertMessage = () => {
   itemsAlertMessage.value.active = !itemsAlertMessage.value.active;
 }
 
-const setOpenAlertDeletePhone = () => {
-  isOpenAlertDeletePhone.value = !isOpenAlertDeletePhone.value;
+const setOpenAlertDeleteUser = () => {
+  isOpenAlertDeleteUser.value = !isOpenAlertDeleteUser.value;
 }
 
 const backPage = () => {

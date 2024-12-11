@@ -47,7 +47,7 @@
                         >
                       </label>
                       <p class="text-xs/5 text-gray-600">
-                        PNG, JPG, JPEG de até 10MB
+                        PNG, JPG, JPEG de até 2MB
                       </p>
                       <span class="text-red-600 text-sm/6 w-[220px]">{{ errorFile }}</span>
                     </div>
@@ -198,6 +198,7 @@ import FormValidation from '@/services/forms/FormValidation';
 import { FormBuilderAplicationInterface, FormDataInterface } from '@/data/types';
 import AlertMessage from '../components/AlertMessage.vue';
 import LoadingApp from '../components/LoadingApp.vue';
+import { createUser } from '@/services/api/user';
 
 const isOpenLoading = ref(false);
 const itemsAlertMessage = ref({
@@ -257,7 +258,7 @@ const onFileChange = (event: Event) => {
 
     if (file) {
         const allowedTypes = ['image/png', 'image/jpeg', 'application/jpg'];
-        const MAX_SIZE = 10 * 1024 * 1024;
+        const MAX_SIZE = 2 * 1024 * 1024;
         
         if (!allowedTypes.includes(file.type)) {
             errorFile.value = '🚫 Tipo de arquivo inválido! Por favor, selecione uma imagem PNG, JPEG ou JPG.';
@@ -300,6 +301,27 @@ const confirmSubmit = async () => {
       return;
     }
   }
+
+  isOpenLoading.value = true;
+  try {
+    const response = await createUser({
+    name: formData.value[0].value, image: fileUpload?.value, company: formData.value[1].value, email: formData.value[2].value, password: formData.value[3].value
+    });
+
+    if (response.status === 201) {
+      itemsAlertMessage.value.active = true;
+      itemsAlertMessage.value.title = 'Sucesso';
+      itemsAlertMessage.value.message = 'Usuário cadastrado com sucesso.';
+      resetValues();
+    }
+  } catch {
+    itemsAlertMessage.value.active = true;
+    itemsAlertMessage.value.title = 'Erro';
+    itemsAlertMessage.value.message = 'Erro inesperado. Tente novamente mais tarde.';
+    itemsAlertMessage.value.isError = true;
+  } finally {
+    isOpenLoading.value = false;
+  }
 }
 
 const isVisiblePassword = ref(false);
@@ -324,5 +346,15 @@ const setOpenLoading = () => {
 const setOpenAlertMessage = () => {
   itemsAlertMessage.value.active = !itemsAlertMessage.value.active;
 }
+
+const resetValues = () => {
+  fileUpload.value = null;
+
+  for (let f of formData.value) {
+    f.value = '';
+    f.error = '';
+  }
+}
+
 
 </script>
