@@ -174,6 +174,17 @@
       </div>
     </div>
   </div>
+  <AlertMessage
+    :is-open="itemsAlertMessage.active"
+    :is-error="itemsAlertMessage.isError"
+    :title="itemsAlertMessage.title"
+    :description="itemsAlertMessage.message"
+    :func-is-open="setOpenAlertMessage"
+  />
+  <LoadingApp
+    :is-open="isOpenLoading"
+    :func-is-open="setOpenLoading"
+  />
 </template>
 
 <script setup lang="ts">
@@ -183,7 +194,16 @@ import ImageProfile from '../components/ImageProfile.vue';
 import FormBuilder from '@/forms/FormBuilder';
 import FormValidation from '@/forms/FormValidation';
 import { FormBuilderAplicationInterface, FormDataInterface } from '@/data/types';
+import AlertMessage from '../components/AlertMessage.vue';
+import LoadingApp from '../components/LoadingApp.vue';
 
+const isOpenLoading = ref(false);
+const itemsAlertMessage = ref({
+  active: false,
+  title: '',
+  message: '',
+  isError: false
+});
 const fileUpload = ref<File | null>(null);
 const errorFile = ref('');
 const formFields = ref<Array<FormBuilderAplicationInterface>>([])
@@ -293,6 +313,14 @@ const setVisibleConfPassword = (value: boolean) => {
 
 const backPage = () => {
   window.location.href = 'users';
+}
+
+const setOpenLoading = () => {
+  isOpenLoading.value = !isOpenLoading.value;
+}
+
+const setOpenAlertMessage = () => {
+  itemsAlertMessage.value.active = !itemsAlertMessage.value.active;
 }
 
 </script>

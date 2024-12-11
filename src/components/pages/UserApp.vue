@@ -66,8 +66,9 @@
                     <button
                       type="button"
                       class="hidden sm:inline-flex w-full items-center justify-center rounded-md border border-transparent 
-                    bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 
-                    focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-[150px] mt-2"
+                      bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 
+                      focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-[150px] mt-2"
+                      @click="setOpenAlertDeletePhone"
                     >
                       Excluir Perfil
                     </button>
@@ -102,7 +103,7 @@
             </div>
             <div
               v-else 
-              class="flex w-full p-2"
+              class="flex w-full p-2 transition-transform"
             >
               <form 
                 class="flex flex-wrap w-full justify-between"
@@ -261,6 +262,7 @@
                         class="inline-flex items-center justify-center rounded-md border border-transparent 
                                     bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
                                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 w-full mb-2"
+                        @click="setOpenRegisterPhone"
                       >
                         Adicionar telefone
                       </button>
@@ -298,6 +300,25 @@
       </div>
     </div>
   </div>
+  <AlertRegisterPhone
+    :is-open="isOpenRegisterPhone"
+    :func-is-open="setOpenRegisterPhone"
+  />
+  <AlertMessage
+    :is-open="itemsAlertMessage.active"
+    :is-error="itemsAlertMessage.isError"
+    :title="itemsAlertMessage.title"
+    :description="itemsAlertMessage.message"
+    :func-is-open="setOpenAlertMessage"
+  />
+  <LoadingApp
+    :is-open="isOpenLoading"
+    :func-is-open="setOpenLoading"
+  />
+  <AlertDeletePhone
+    :is-open="isOpenAlertDeletePhone"
+    :func-is-open="setOpenAlertDeletePhone"
+  />
 </template>
 
 <script setup lang="ts">
@@ -307,8 +328,21 @@ import ImageProfile from '../components/ImageProfile.vue';
 import FormBuilder from '@/forms/FormBuilder';
 import { FormBuilderAplicationInterface, FormDataInterface } from '@/data/types';
 import FormValidation from '@/forms/FormValidation';
+import AlertRegisterPhone from '../components/AlertRegisterPhone.vue';
+import AlertMessage from '../components/AlertMessage.vue';
+import LoadingApp from '../components/LoadingApp.vue';
+import AlertDeletePhone from '../components/AlertDeletePhone.vue';
 
 const editUser = ref<boolean>(false);
+const isOpenRegisterPhone = ref(false);
+const isOpenLoading = ref(false);
+const isOpenAlertDeletePhone = ref(false);
+const itemsAlertMessage = ref({
+  active: false,
+  title: '',
+  message: '',
+  isError: false
+});
 
 const fileUpload = ref<File | null>(null);
 const errorFile = ref('');
@@ -407,5 +441,21 @@ const resetValues = () => {
   }
 
   editUser.value = false;
+}
+
+const setOpenRegisterPhone = () => {
+  isOpenRegisterPhone.value = !isOpenRegisterPhone.value;
+}
+
+const setOpenLoading = () => {
+  isOpenLoading.value = !isOpenLoading.value;
+}
+
+const setOpenAlertMessage = () => {
+  itemsAlertMessage.value.active = !itemsAlertMessage.value.active;
+}
+
+const setOpenAlertDeletePhone = () => {
+  isOpenAlertDeletePhone.value = !isOpenAlertDeletePhone.value;
 }
 </script>
