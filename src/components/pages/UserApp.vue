@@ -28,14 +28,14 @@
                     <h2 
                       class="text-[20px] font-bold truncate transition-all max-w-[460px] truncate"
                     >
-                      Higor Ribeiro Araujo
+                      {{ user?.name }}
                     </h2>
                     <div class="flex flex-col">
                       <h3 class="text-[16px] font-medium">
                         Empresa:
                       </h3>
                       <p class="text-[16px] max-w-[460px] truncate">
-                        -
+                        {{ user?.company ?? '-' }}
                       </p>
                     </div>
                     <div class="flex flex-col">
@@ -43,7 +43,7 @@
                         E-mail:
                       </h3>
                       <p class="text-[16px] max-w-[460px] truncate">
-                        higor@gmail.com
+                        {{ user?.email }}
                       </p>
                     </div>
                     <div class="flex flex-row gap-6">
@@ -52,7 +52,7 @@
                           Data de criação:
                         </h3>
                         <p class="text-[16px]">
-                          12/12/2024
+                          {{ formatDate(user?.created_at!) }}
                         </p>
                       </div>
                       <div class="flex flex-col">
@@ -60,7 +60,7 @@
                           Data de edição:
                         </h3>
                         <p class="text-[16px]">
-                          12/12/2024
+                          {{ formatDate(user?.updated_at!) }}
                         </p>
                       </div>
                     </div>
@@ -84,10 +84,27 @@
                   <h3 class="text-[16px] font-medium">
                     Telefone(s):
                   </h3>
-                  <div class="flex flex-col p-2 rounded bg-gray-200 w-full mb-2">
-                    <div class="flex flex-row justify-between">
-                      <p class="text-[16px] font-medium truncate">
-                        (91) 98485-0712
+                  <div
+                    class="flex flex-col p-2 rounded bg-gray-200 w-full mb-2"
+                  >
+                    <div
+                      v-for="(phone, index) in user?.phones"
+                      :key="index"
+                      class="flex flex-row justify-between"
+                    >
+                      <p
+                        
+                        class="text-[16px] font-medium truncate"
+                      >
+                        {{ phone.num }}
+                      </p>
+                    </div>
+                    <div v-if="user?.phones && user?.phones.length < 1">
+                      <p
+                        
+                        class="text-[16px] font-medium truncate"
+                      >
+                        Nenhum telefone cadastrado.
                       </p>
                     </div>
                   </div>
@@ -180,9 +197,13 @@
                         Telefone(s):
                       </h3>
                       <div class="flex flex-col p-2 rounded bg-gray-200 w-full mb-2">
-                        <div class="flex flex-row justify-between">
+                        <div
+                          v-for="(phone, index) in user?.phones"
+                          :key="index"
+                          class="flex flex-row justify-between"
+                        >
                           <p class="text-[16px] font-medium truncate">
-                            (91) 98485-0712
+                            {{ phone.num }}
                           </p>
                           <div class="flex flex-row gap-2">
                             <button class="flex justify-center items-center bg-green-600 hover:bg-green-500 w-6 h-6 rounded">
@@ -257,6 +278,14 @@
                             </button>
                           </div>
                         </div>
+                        <div v-if="user?.phones && user?.phones.length < 1">
+                          <p
+                        
+                            class="text-[16px] font-medium truncate"
+                          >
+                            Nenhum telefone cadastrado.
+                          </p>
+                        </div>
                       </div>
                       <button
                         type="button"
@@ -326,13 +355,21 @@
 import { onMounted, ref } from 'vue';
 import HeaderApp from '../components/HeaderApp.vue';
 import ImageProfile from '../components/ImageProfile.vue';
-import FormBuilder from '@/forms/FormBuilder';
-import { FormBuilderAplicationInterface, FormDataInterface } from '@/data/types';
-import FormValidation from '@/forms/FormValidation';
+import FormBuilder from '@/services/forms/FormBuilder';
+import { FormBuilderAplicationInterface, FormDataInterface, UserAdaptInterface } from '@/data/types';
+import FormValidation from '@/services/forms/FormValidation';
 import AlertRegisterPhone from '../components/AlertRegisterPhone.vue';
 import AlertMessage from '../components/AlertMessage.vue';
 import LoadingApp from '../components/LoadingApp.vue';
 import AlertDeletePhone from '../components/AlertDeletePhone.vue';
+import { useRoute } from 'vue-router';
+import { getUser } from '@/services/api/user';
+import UserAdapt from '@/services/adapt/UserAdapt';
+import { formatDate } from '@/utils/dateUtils';
+
+const route = useRoute();
+const userId = ref(route.params.id);
+console.log(userId)
 
 const editUser = ref<boolean>(false);
 const isOpenRegisterPhone = ref(false);
@@ -344,6 +381,8 @@ const itemsAlertMessage = ref({
   message: '',
   isError: false
 });
+
+const user = ref<UserAdaptInterface | null>();
 
 const fileUpload = ref<File | null>(null);
 const errorFile = ref('');
@@ -367,6 +406,7 @@ const formData = ref<Array<FormDataInterface>>([
 ]);
 
 onMounted(() => {
+  detailUser();
   formFields.value = new FormBuilder()
     .addTextField('username', 'Nome *', 'text', 'Digite seu nome completo')
     .addTextField('company', 'Empresa *', 'text', 'Digite o nome da empresa')
@@ -391,7 +431,7 @@ const onFileChange = (event: Event) => {
         const MAX_SIZE = 10 * 1024 * 1024;
         
         if (!allowedTypes.includes(file.type)) {
-            errorFile.value = '🚫 Tipo de arquivo inválido! Por favor, selecione uma imagem PNG, JPEG ou um arquivo JPG.';
+            errorFile.value = '🚫 Tipo de arquivo inválido! Por favor, selecione uma imagem PNG, JPEG ou JPG.';
         } else if (file.size > MAX_SIZE) {
           errorFile.value = '🚫 Arquivo ultrapassa o limite de tamanho.';
         } else {
@@ -462,5 +502,17 @@ const setOpenAlertDeletePhone = () => {
 
 const backPage = () => {
   window.location.href = '/users';
+}
+
+const detailUser = async () => {
+  const response = await getUser(Number(userId.value));
+  if (response.status === 200) {
+    const userAdapt = new UserAdapt(response.data);
+    user.value = userAdapt.externalUserAdapt;
+
+    formData.value[0].value = user.value!.name! ?? '';
+    formData.value[1].value = user.value!.company! ?? '';
+    formData.value[2].value = user.value!.email! ?? '';
+  }
 }
 </script>

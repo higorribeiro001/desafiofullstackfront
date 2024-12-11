@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 export interface Phone {
     num: string;
     user_id: number;
@@ -72,4 +71,26 @@ interface FormDataInterface {
     name: string;
     value: string;
     error: string;
+}
+
+interface UserAdaptInterface {
+    id: number;
+    image?: string;
+    name: string;
+    email: string;
+    company: string;
+    created_at: string;
+    updated_at: string;
+    phones: [
+        {
+            user_id: number;
+            num: string;
+        }
+    ]
+}
+
+interface UsersAdaptInterface {
+    current_page: number;
+    last_page: number;
+    data: UserAdaptInterface[]
 }

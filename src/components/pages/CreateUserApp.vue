@@ -193,8 +193,8 @@
 import { onMounted, ref } from 'vue';
 import HeaderApp from '../components/HeaderApp.vue';
 import ImageProfile from '../components/ImageProfile.vue';
-import FormBuilder from '@/forms/FormBuilder';
-import FormValidation from '@/forms/FormValidation';
+import FormBuilder from '@/services/forms/FormBuilder';
+import FormValidation from '@/services/forms/FormValidation';
 import { FormBuilderAplicationInterface, FormDataInterface } from '@/data/types';
 import AlertMessage from '../components/AlertMessage.vue';
 import LoadingApp from '../components/LoadingApp.vue';
@@ -260,7 +260,7 @@ const onFileChange = (event: Event) => {
         const MAX_SIZE = 10 * 1024 * 1024;
         
         if (!allowedTypes.includes(file.type)) {
-            errorFile.value = '🚫 Tipo de arquivo inválido! Por favor, selecione uma imagem PNG, JPEG ou um arquivo JPG.';
+            errorFile.value = '🚫 Tipo de arquivo inválido! Por favor, selecione uma imagem PNG, JPEG ou JPG.';
         } else if (file.size > MAX_SIZE) {
           errorFile.value = '🚫 Arquivo ultrapassa o limite de tamanho.';
         } else {

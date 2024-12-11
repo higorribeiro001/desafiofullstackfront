@@ -5,13 +5,16 @@
       "target": "ESNext",
       "moduleResolution": "node",
       "jsx": "preserve",
-      "types": ["vite/client"],
+      "types": ["vite/client", "node"],
       "baseUrl": "./",
         "allowJs": true,  
       "paths": {
         "@/*": [
           "src/*"
-        ]
+        ],
+        "@axios": [
+          "src/plugins/axios"
+        ],
       },
       "lib": [
         "esnext",

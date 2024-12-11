@@ -101,8 +101,8 @@
 <script setup lang="ts">
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { FormBuilderAplicationInterface, FormDataInterface } from '@/data/types';
-import FormBuilder from '@/forms/FormBuilder';
-import FormValidation from '@/forms/FormValidation';
+import FormBuilder from '@/services/forms/FormBuilder';
+import FormValidation from '@/services/forms/FormValidation';
 import { defineProps, onMounted, ref } from 'vue';
 
 const props = defineProps<{isOpen: boolean; funcIsOpen: () => void;}>();
