@@ -12,7 +12,11 @@
     <div class="mt-8 flex flex-col">
       <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-          <div class="flex flex-wrap overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg bg-white lg:p-10 p-4">
+          <SkeletonProfile v-if="isLoadingUser" />
+          <div
+            v-else
+            class="flex flex-wrap overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg bg-white lg:p-10 p-4"
+          >
             <div
               v-if="!editUser"
               class="flex flex-wrap w-full animate-fade-left"
@@ -212,7 +216,7 @@
                             <button
                               type="button"
                               class="flex justify-center items-center bg-green-600 hover:bg-green-500 w-6 h-6 rounded"
-                              @click="() => setOpenEditPhone(phone.id)"
+                              @click="() => setOpenEditPhone(phone.id, phone.num)"
                             >
                               <svg
                                 width="15"
@@ -349,6 +353,7 @@
   />
   <AlertEditPhone
     :id="idPhoneSelected"
+    :num="numPhoneSelected"
     :is-open="isOpenEditPhone"
     :func-is-open="setOpenEditPhone"
     :user-id="Number(userId)"
@@ -395,17 +400,20 @@ import { deleteUser, getUser, updateUser } from '@/services/api/user';
 import UserAdapt from '@/services/adapt/UserAdapt';
 import { formatDate } from '@/utils/dateUtils';
 import { deletePhone } from '@/services/api/phone';
+import SkeletonProfile from '../components/SkeletonProfile.vue';
 
 
 const route = useRoute();
 const userId = ref(route.params.id);
 const urlImg = ref<string | null>(null);
 const idPhoneSelected = ref();
+const numPhoneSelected = ref('');
 
 const editUser = ref<boolean>(false);
 const isOpenRegisterPhone = ref(false);
 const isOpenEditPhone = ref(false);
 const isOpenLoading = ref(false);
+const isLoadingUser = ref(false);
 const isOpenAlertDeleteUser = ref(false);
 const isOpenAlertDeletePhone = ref(false);
 const itemsAlertMessage = ref({
@@ -558,6 +566,7 @@ const confirmDeletePhone = async () => {
       itemsAlertMessage.value.title = 'Sucesso';
       itemsAlertMessage.value.message = 'Telefone deletado com sucesso.';
       isOpenAlertDeletePhone.value = false;
+      detailUser();
     }
   } catch {
     itemsAlertMessage.value.active = true;
@@ -584,8 +593,9 @@ const setOpenRegisterPhone = () => {
   isOpenRegisterPhone.value = !isOpenRegisterPhone.value;
 }
 
-const setOpenEditPhone = (id: number) => {
-  idPhoneSelected.value = id;
+const setOpenEditPhone = (id?: number, num?: string) => {
+  idPhoneSelected.value = id!;
+  numPhoneSelected.value = num!;
   isOpenEditPhone.value = !isOpenEditPhone.value;
 }
 
@@ -611,6 +621,7 @@ const backPage = () => {
 }
 
 const detailUser = async () => {
+  isLoadingUser.value = true;
   const response = await getUser(Number(userId.value));
   if (response.status === 200) {
     const userAdapt = new UserAdapt(response.data);
@@ -622,5 +633,6 @@ const detailUser = async () => {
 
     urlImg.value = process.env.VUE_APP_BACKEND_URL_PATH_STORAGE!+user.value!.image;
   }
+  isLoadingUser.value = false;
 }
 </script>

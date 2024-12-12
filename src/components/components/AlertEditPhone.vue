@@ -56,7 +56,7 @@
                         >
                           <input
                             :id="field.name"
-                            v-model="formData[index].value"
+                            v-model="formData[0].value"
                             v-mask="['(##) #####-####', '(##) ####-####']"
                             :type="field.type"
                             :name="field.name"
@@ -115,12 +115,12 @@ import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessu
 import { FormBuilderAplicationInterface, FormDataInterface } from '@/data/types';
 import FormBuilder from '@/services/forms/FormBuilder';
 import FormValidation from '@/services/forms/FormValidation';
-import { defineProps, onMounted, ref } from 'vue';
+import { defineProps, onMounted, ref, watch } from 'vue';
 import { updatePhone } from '@/services/api/phone';
 import AlertMessage from '../components/AlertMessage.vue';
 import LoadingApp from '../components/LoadingApp.vue';
 
-const props = defineProps<{isOpen: boolean; funcIsOpen: (id: number) => void; id: number; userId: number; funcGetUser: () => void}>();
+const props = defineProps<{isOpen: boolean; funcIsOpen: (id: number) => void; id: number; num: string; userId: number; funcGetUser: () => void}>();
 
 const isOpenLoading = ref(false);
 const itemsAlertMessage = ref({
@@ -134,7 +134,7 @@ const formFields = ref<Array<FormBuilderAplicationInterface>>([])
 const formData = ref<Array<FormDataInterface>>([
     {
       name: 'telefone',
-      value: '',
+      value: props.num!,
       error: ''
     }
 ]);
@@ -174,7 +174,6 @@ const confirmSubmit = async () => {
       itemsAlertMessage.value.active = true;
       itemsAlertMessage.value.title = 'Sucesso';
       itemsAlertMessage.value.message = 'Telefone editado com sucesso.';
-      resetValues();
       props.funcGetUser();
       props.funcIsOpen(props.id);
     }
@@ -204,5 +203,9 @@ const setOpenLoading = () => {
 const setOpenAlertMessage = () => {
   itemsAlertMessage.value.active = !itemsAlertMessage.value.active;
 }
+
+watch(() => props.num, (newPhone: string) => {
+  formData.value[0].value = newPhone;
+})
 
 </script>
