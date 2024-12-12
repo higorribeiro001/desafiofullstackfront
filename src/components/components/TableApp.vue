@@ -102,6 +102,7 @@
       v-else
       class="divide-y divide-gray-200 bg-white animate-fade-up"
     >
+      <!-- loading -->
       <tr class="animate-fade-up">
         <td />
         <td />

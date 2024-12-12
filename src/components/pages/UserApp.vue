@@ -9,10 +9,13 @@
       :edit-user="editUser"
       :func-edit-user="handleEditUser"
     />
+    <!-- card user -->
     <div class="mt-8 flex flex-col">
       <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <!-- skeleton loading -->
           <SkeletonProfile v-if="isLoadingUser" />
+          <!-- detail user -->
           <div
             v-else
             class="flex flex-wrap overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg bg-white lg:p-10 p-4"
@@ -123,6 +126,7 @@
                 Excluir Perfil
               </button>
             </div>
+            <!-- form to edit user -->
             <div
               v-else 
               class="flex w-full p-2 animate-fade-left"
@@ -132,6 +136,7 @@
                 method="post"
                 @submit.prevent="confirmSubmit"
               >
+                <!-- photo -->
                 <div class="col-span-full p-1">
                   <label
                     for="photo"
@@ -173,6 +178,7 @@
                   <div
                     class="flex flex-wrap w-full"
                   >
+                    <!-- inputs added with form builder -->
                     <div
                       v-for="(field, index) in formFields"
                       :key="index"
@@ -199,6 +205,7 @@
                       </div>
                       <span class="text-red-600 text-sm/6">{{ formData[index].error }}</span>
                     </div>
+                    <!-- phone -->
                     <div class="sm:col-span-4 lg:w-1/2 w-full transition-all p-1">
                       <h3 class="text-[16px] font-medium">
                         Telefone(s):

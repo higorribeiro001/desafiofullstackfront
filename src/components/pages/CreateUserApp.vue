@@ -14,11 +14,13 @@
             <div
               class="flex w-full p-2"
             >
+              <!-- form to register user -->
               <form 
                 class="flex flex-wrap w-full justify-between"
                 method="post"
                 @submit.prevent="confirmSubmit"
               >
+                <!-- photo -->
                 <div class="col-span-full p-1">
                   <label
                     for="photo"
@@ -57,6 +59,7 @@
                   <div
                     class="flex flex-wrap w-full"
                   >
+                    <!-- inputs added with form builder -->
                     <div
                       v-for="(field, index) in formFields"
                       :key="index"
