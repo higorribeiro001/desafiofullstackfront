@@ -1,7 +1,7 @@
 ﻿# desafiofullstackfront
 
 > Descrição:
-#### Front-end desenvolvido com vue.js para gerenciamento de usuários. Onde cada usuário poderá ter um ou mais números de telefone. A listagem de usuários contém paginação (como ilustrado na imagem abaixo) quando a lista contém mais de uma página. Para os formulários foi aplicado o Design Pattern (padrão de Design) Builder pattern (padrão do construtor) que reduz o custo e melhora a performance. Além disso, também foi aplicado o design pattern adapter (padrão do adaptador) que faz adaptação da responsta vinda da api que facilita ao front na renderização dos dados. Também foram utilizadas animações para tornar a experiência mais leve e dinâmica para o usuário, além da responsividade (capacidade de adaptação) das telas que possibilita a utilização do site em aparelhos com resoluções distintas.
+#### Front-end desenvolvido com vue.js para gerenciamento de usuários. Onde cada usuário poderá ter um ou mais números de telefone. A listagem de usuários contém paginação (como ilustrado na imagem abaixo) quando a lista contém mais de uma página. Para os formulários foi aplicado o Design Pattern (padrão de Design) Builder pattern (padrão do construtor) que reduz o custo e melhora a performance. Além disso, também foi aplicado o design pattern adapter (padrão do adaptador) que faz adaptação da responsta vinda da api que facilita ao front na renderização dos dados. Também foram utilizadas animações para tornar a experiência mais leve e dinâmica para o usuário, além da responsividade (capacidade de adaptação) das telas que possibilita a utilização do site em aparelhos com resoluções distintas. Foram feitos alguns testes unitários simples mas que ajudaram bastante, já que apontaram bugs que não eram vistos a olho nu e que nem a IDE alertava, como por exemplo algumas tipagens e até imports.
 
 #### Captura de tela da lista de usuários:
 ![Captura de tela 2024-12-13 0408324](https://github.com/user-attachments/assets/0f458f54-54c9-471b-9591-237ca442ae70)
@@ -27,10 +27,18 @@ npm i
 ~~~~
 npm i --force
 ~~~~
-
+#### Se o .env estiver ausente, crie um na raiz do projeto e configure desta forma:
+~~~~
+VUE_APP_BACKEND_URL=http://localhost:8000/api
+VUE_APP_BACKEND_URL_PATH_STORAGE=http://localhost:8000/storage/
+~~~~
 #### Por último, é só executar o comando abaixo e o site estará no ar:
 ~~~
 npm run serve
 ~~~
+#### Caso queira executar os testes:
+~~~~
+npm run test
+~~~~
 
 #### Para acessar o app: http://localhost:8080/
