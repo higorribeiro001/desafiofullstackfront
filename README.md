@@ -19,6 +19,13 @@
 ![Captura de tela 2024-12-13 0346521](https://github.com/user-attachments/assets/3dc266b4-54d6-49cf-aa3b-0c7405adf9ef)
 
 > Execução:
+
+#### Obs: é importante lembrar, que para que os jobs de email funcionem corretamente e sincronizado com o front-end, execute o comando abaixo:
+~~~~
+php artisan queue:work --tries=3
+~~~~
+#### Também não se esqueça de iniciar os jobs pela rota: api/job
+
 #### Após clonar o projeto, deve-se instalar todas as dependencias:
 ~~~~
 npm i
