@@ -142,21 +142,21 @@
       <button 
         v-if="itemsPagination.last_page > 0"
         :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_one, 'font-semibold': itemsPagination.index_one}"
-        @click="() => itemsPagination.current_page = itemsPagination.index_one"
+        @click="() => definePage(itemsPagination.index_one)"
       >
         {{ itemsPagination.index_one }}
       </button>
       <button 
         v-if="itemsPagination.last_page > 1"
         :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_two, 'font-semibold': itemsPagination.index_two}"
-        @click="() => itemsPagination.current_page = itemsPagination.index_two"
+        @click="() => definePage(itemsPagination.index_two)"
       >
         {{ itemsPagination.index_two }}
       </button>
       <button
         v-if="itemsPagination.last_page > 2" 
         :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.index_three, 'font-semibold': itemsPagination.index_three}"
-        @click="() => itemsPagination.current_page = itemsPagination.index_three"
+        @click="() => definePage(itemsPagination.index_three)"
       >
         {{ itemsPagination.index_three }}
       </button>
@@ -169,7 +169,7 @@
       <button 
         v-if="itemsPagination.last_page > 3"
         :class="{'text-indigo-600': itemsPagination.current_page === itemsPagination.last_page, 'font-semibold': itemsPagination.last_page}"
-        @click="() => itemsPagination.current_page = itemsPagination.last_page"
+        @click="() => definePage(itemsPagination.last_page)"
       >
         {{ itemsPagination.last_page }}
       </button>
@@ -203,6 +203,11 @@ const itemsPagination = ref(
     index_three: 3,
   }
 );
+
+const definePage = (page: number) => {
+  itemsPagination.value.current_page = page;
+  listUsers();
+}
 
 const nextPage = () => {
   itemsPagination.value.current_page += 1;
