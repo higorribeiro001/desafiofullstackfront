@@ -23,6 +23,6 @@
 <script setup lang="ts">
 
 import TableApp from '@/components/components/TableApp.vue';
-import HeaderApp from '../components/HeaderApp.vue';
+import HeaderApp from '@/components/components/HeaderApp.vue';
 
 </script>

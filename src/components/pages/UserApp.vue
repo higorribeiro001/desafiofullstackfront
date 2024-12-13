@@ -59,7 +59,7 @@
                           Data de criação:
                         </h3>
                         <p class="text-[16px]">
-                          {{ formatDate(user?.created_at!) }}
+                          {{ formatDate(user?.created_at ?? '') }}
                         </p>
                       </div>
                       <div class="flex flex-col">
@@ -67,7 +67,7 @@
                           Data de edição:
                         </h3>
                         <p class="text-[16px]">
-                          {{ formatDate(user?.updated_at!) }}
+                          {{ formatDate(user?.updated_at ?? '') }}
                         </p>
                       </div>
                     </div>
@@ -391,27 +391,27 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import HeaderApp from '../components/HeaderApp.vue';
-import ImageProfile from '../components/ImageProfile.vue';
+import HeaderApp from '@/components/components/HeaderApp.vue';
+import ImageProfile from '@/components/components/ImageProfile.vue';
 import FormBuilder from '@/services/forms/FormBuilder';
 import { FormBuilderAplicationInterface, FormDataInterface, UserAdaptInterface } from '@/data/types';
 import FormValidation from '@/services/forms/FormValidation';
-import AlertRegisterPhone from '../components/AlertRegisterPhone.vue';
-import AlertEditPhone from '../components/AlertEditPhone.vue';
-import AlertMessage from '../components/AlertMessage.vue';
-import LoadingApp from '../components/LoadingApp.vue';
-import AlertDeleteUser from '../components/AlertDeleteUser.vue';
-import AlertDeletePhone from '../components/AlertDeletePhone.vue';
+import AlertRegisterPhone from '@/components/components/AlertRegisterPhone.vue';
+import AlertEditPhone from '@/components/components/AlertEditPhone.vue';
+import AlertMessage from '@/components/components/AlertMessage.vue';
+import LoadingApp from '@/components/components/LoadingApp.vue';
+import AlertDeleteUser from '@/components/components/AlertDeleteUser.vue';
+import AlertDeletePhone from '@/components/components/AlertDeletePhone.vue';
 import { useRoute } from 'vue-router';
 import { deleteUser, getUser, updateUser } from '@/services/api/user';
 import UserAdapt from '@/services/adapt/UserAdapt';
 import { formatDate } from '@/utils/dateUtils';
 import { deletePhone } from '@/services/api/phone';
-import SkeletonProfile from '../components/SkeletonProfile.vue';
+import SkeletonProfile from '@/components/components/SkeletonProfile.vue';
 
 
 const route = useRoute();
-const userId = ref<string | null>(route.params.id);
+const userId = ref<string | null>(String(route.params.id));
 const urlImg = ref<string | null>(null);
 const idPhoneSelected = ref();
 const numPhoneSelected = ref('');
@@ -545,7 +545,7 @@ const confirmDeleteUser = async () => {
     if (response.status === 200) {
       itemsAlertMessage.value.active = true;
       itemsAlertMessage.value.title = 'Sucesso';
-      itemsAlertMessage.value.message = 'Telefone deletado com sucesso.';
+      itemsAlertMessage.value.message = 'Usuário deletado com sucesso.';
       isOpenAlertDeletePhone.value = false;
       setTimeout(() => {
         window.location.href = '/users';
