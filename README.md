@@ -23,7 +23,7 @@
 
 > Execução:
 
-#### Obs: é importante lembrar, que para que os jobs de email funcionem corretamente e sincronizado com o front-end, execute o comando abaixo:
+#### Obs: é importante lembrar, que para que os jobs de email funcionem corretamente e sincronizado com o front-end, execute o comando abaixo lá no back-end:
 ~~~~
 php artisan queue:work --tries=3
 ~~~~
