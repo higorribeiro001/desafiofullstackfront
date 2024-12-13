@@ -18,6 +18,9 @@
 #### Captura de tela dos testes:
 ![Captura de tela 2024-12-13 0346521](https://github.com/user-attachments/assets/3dc266b4-54d6-49cf-aa3b-0c7405adf9ef)
 
+#### Captura de tela de edição:
+![Captura de tela 2024-12-13 0359112](https://github.com/user-attachments/assets/52eed000-6d2c-49f7-a165-2681b10fdc27)
+
 > Execução:
 
 #### Obs: é importante lembrar, que para que os jobs de email funcionem corretamente e sincronizado com o front-end, execute o comando abaixo:
