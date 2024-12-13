@@ -118,8 +118,8 @@ import FormBuilder from '@/services/forms/FormBuilder';
 import FormValidation from '@/services/forms/FormValidation';
 import { defineProps, onMounted, ref, watch } from 'vue';
 import { updatePhone } from '@/services/api/phone';
-import AlertMessage from '../components/AlertMessage.vue';
-import LoadingApp from '../components/LoadingApp.vue';
+import AlertMessage from '@/components/components/AlertMessage.vue';
+import LoadingApp from '@/components/components/LoadingApp.vue';
 
 const props = defineProps<{isOpen: boolean; funcIsOpen: (id: number) => void; id: number; num: string; userId: number; funcGetUser: () => void}>();
 
