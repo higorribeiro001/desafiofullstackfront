@@ -1,9 +1,16 @@
-// import { shallowMount } from '@vue/test-utils';
-// import AlertRegisterPhone from '@/components/AlertRegisterPhone.vue';
+import { mount } from '@vue/test-utils'
+import AlertRegisterPhone from '../../src/components/components/AlertRegisterPhone.vue'
 
-// describe('AlertRegisterPhone.vue', () => {
-//   it('renders correctly', () => {
-//     const wrapper = shallowMount(AlertRegisterPhone);
-//     expect(wrapper.exists()).toBe(true);
-//   });
-// });
+describe("AlertRegisterPhone component", () => {
+  test("Render AlertRegisterPhone", () => {
+    const component = mount(AlertRegisterPhone, {
+        props: {
+            isOpen: false,
+            userId: 1,
+            funcIsOpen: () => {},    
+            funcGetUser: () => {}    
+        }
+    });
+    expect(component).toBeDefined();
+  });
+});

@@ -5,7 +5,7 @@
       "target": "ESNext",
       "moduleResolution": "node",
       "jsx": "preserve",
-      "types": ["vite/client", "node"],
+      "types": ["vite/client", "node", "vitest/globals", "jest"],
       "baseUrl": "./",
         "allowJs": true,  
       "paths": {

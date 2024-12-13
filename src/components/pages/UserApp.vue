@@ -411,7 +411,7 @@ import SkeletonProfile from '../components/SkeletonProfile.vue';
 
 
 const route = useRoute();
-const userId = ref(route.params.id);
+const userId = ref<string | null>(route.params.id);
 const urlImg = ref<string | null>(null);
 const idPhoneSelected = ref();
 const numPhoneSelected = ref('');

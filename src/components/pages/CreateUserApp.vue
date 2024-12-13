@@ -147,7 +147,7 @@
                       <span class="text-red-600 text-sm/6">{{ formData[index].error }}</span>
                     </div>
                   </div>
-                  <div class="my-6 p-1">
+                  <div class="mt-12 mb-6 p-1">
                     <p class="text-[12px] text-gray-800 font-semibold">
                       *Campos obrigatórios
                     </p>
