@@ -51,7 +51,7 @@
                         
           class="text-[16px] font-medium truncate p-4"
         >
-          Nenhum telefone cadastrado.
+          Nenhum usuário cadastrado.
         </td>
         <td />
         <td />
